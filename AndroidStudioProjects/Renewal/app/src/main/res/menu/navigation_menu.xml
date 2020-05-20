@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/home"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/menu_stats"
+        android:icon="@drawable/ic_action_stats"
+        android:title="Statistics" />
+    <item
+        android:id="@+id/menu_badges"
+        android:icon="@drawable/badge"
+        android:title="Badges" />
+
+    <item
+        android:id="@+id/menu_reminders"
+        android:icon="@drawable/ic_action_clock"
+        android:title="Reminders" />
+    <item
+        android:id="@+id/menu_settings"
+        android:icon="@drawable/ic_action_settings"
+        android:title="Settings" />
+
+
+
+
+
+
+
+</menu>

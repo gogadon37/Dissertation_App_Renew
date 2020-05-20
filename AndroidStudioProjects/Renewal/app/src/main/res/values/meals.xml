@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="mealsarray" >
+
+        <item> Unscheduled </item>
+        <item> Breakfast</item>
+        <item> Morning Snack </item>
+        <item> Lunch </item>
+        <item> Afternoon Snack </item>
+        <item> Dinner </item>
+        <item> Evening Snack </item>
+
+
+    </string-array>
+
+
+
+</resources>
