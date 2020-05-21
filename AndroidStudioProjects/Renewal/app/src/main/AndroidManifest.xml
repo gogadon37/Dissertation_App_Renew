@@ -10,11 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AddItemActivity"></activity>
-        <activity android:name=".Dashboard_Fragment" />
+        <activity android:name="com.gogadon.fragments.Dashboard_Fragment" />
         <activity android:name=".Dashboard" />
         <activity android:name=".termsandconditions_fragment" />
         <activity android:name=".NotificationTimeDialog" />
-        <activity android:name=".RemindersFragment" />
+        <activity android:name="com.gogadon.fragments.RemindersFragment" />
         <activity android:name="com.gogadon.fragments.UserDetailsFragment" />
         <activity
             android:name=".MainActivity"

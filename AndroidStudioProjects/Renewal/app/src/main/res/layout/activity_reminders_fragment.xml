@@ -4,21 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:orientation="vertical"
-    tools:context=".RemindersFragment">
+    tools:context="com.gogadon.fragments.RemindersFragment">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:layout_marginBottom="4dp"
+        android:adjustViewBounds="true"
+        android:elevation="10dp"
+
+        android:scaleType="centerCrop"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datetv"
+        app:srcCompat="@mipmap/alarmbanner" />
+
 
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:isScrollContainer="false"
-        >
+        android:layout_margin="8dp"
+        android:isScrollContainer="false">
+
+
+
+
+
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
+
+
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,12 +60,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Breakfast : 8:00 am" />
+                    android:text="Breakfast : 8:00 am"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
 
                 <ImageView
                     android:id="@+id/imageView_Breakfast"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="0.1"
                     android:src="@android:drawable/ic_menu_edit" />
@@ -50,18 +80,20 @@
 
                 <CheckBox
                     android:id="@+id/checkBox_MorningSnack"
-                    android:layout_width="wrap_content"
+                    android:layout_width="176dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Morning Snack : 11:00 am" />
+                    android:text="Morning Snack : 11:00 am"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                 <ImageView
                     android:id="@+id/imageViewMorningSnack"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="0.1"
+
                     android:src="@android:drawable/ic_menu_edit" />
             </LinearLayout>
 
@@ -73,16 +105,17 @@
 
                 <CheckBox
                     android:id="@+id/checkBox_Lunch"
-                    android:layout_width="wrap_content"
+                    android:layout_width="178dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Lunch : 1:00 pm" />
+                    android:text="Lunch : 1:00 pm"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                 <ImageView
                     android:id="@+id/imageView_lunch"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="0.1"
                     android:src="@android:drawable/ic_menu_edit" />
@@ -96,16 +129,18 @@
 
                 <CheckBox
                     android:id="@+id/checkBox_AfternoonSnack"
-                    android:layout_width="wrap_content"
+                    android:layout_width="168dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Afternoon Snack : 3:00 pm" />
+                    android:text="Afternoon Snack : 3:00 pm"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                 <ImageView
                     android:id="@+id/imageView_AfternoonSnack"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="25dp"
+
                     android:layout_gravity="center"
                     android:layout_weight="0.1"
                     android:src="@android:drawable/ic_menu_edit" />
@@ -119,16 +154,17 @@
 
                 <CheckBox
                     android:id="@+id/checkBox_Dinner"
-                    android:layout_width="wrap_content"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Dinner: 6:00 pm" />
+                    android:text="Dinner: 6:00 pm"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                 <ImageView
                     android:id="@+id/imageView4_Dinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="0.1"
                     android:src="@android:drawable/ic_menu_edit" />
@@ -142,48 +178,25 @@
 
                 <CheckBox
                     android:id="@+id/checkBox_EveningSnack"
-                    android:layout_width="wrap_content"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Evening Snack : 8:00 pm" />
+                    android:text="Evening Snack : 8:00 pm"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                 <ImageView
                     android:id="@+id/imageView_EveningSnack"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="0.1"
                     android:src="@android:drawable/ic_menu_edit" />
             </LinearLayout>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </LinearLayout>
     </ScrollView>
-
-
-
-
-
-
-
-
-
 
 
 </LinearLayout>

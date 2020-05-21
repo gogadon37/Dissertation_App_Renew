@@ -17,7 +17,7 @@ public interface LogDAO {
     List<Log> getall();
 
     @Query("SELECT * FROM logs Where log_date = :date")
-    LiveData  <List<Log>> getallfordate(String date);
+    List<Log> getallfordate(String date);
 
     @Insert
     void insert(Log l);

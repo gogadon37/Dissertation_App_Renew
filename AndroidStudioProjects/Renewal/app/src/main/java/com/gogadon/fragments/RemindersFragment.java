@@ -1,4 +1,4 @@
-package com.gogadon.renewal;
+package com.gogadon.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +17,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TimePicker;
+
+import com.gogadon.renewal.R;
 
 public class RemindersFragment extends Fragment {
 

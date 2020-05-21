@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gogadon.renewal.Dashboard_Fragment;
+import com.gogadon.fragments.Dashboard_Fragment;
 import com.gogadon.renewal.R;
 import com.gogadon.roomdatabase.Log;
 import com.google.android.material.button.MaterialButton;

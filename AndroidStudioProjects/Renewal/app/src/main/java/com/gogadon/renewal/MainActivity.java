@@ -1,6 +1,5 @@
 package com.gogadon.renewal;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -15,11 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gogadon.adapters.CustomviewPager;
+import com.gogadon.fragments.RemindersFragment;
 import com.gogadon.fragments.UserDetailsFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
     CustomviewPager viewPager;
     boolean setupcomplete;
     private PagerAdapter pagerAdapter;
-    UserDetailsFragment frag1 = new UserDetailsFragment();
-    RemindersFragment frag2 = new RemindersFragment(MainActivity.this);
-    termsandconditions_fragment frag3 = new termsandconditions_fragment();
+    UserDetailsFragment frag1;
+    RemindersFragment frag2;
+    termsandconditions_fragment frag3;
     TextView Headingtext;
     ImageView icon1;
     ImageView icon2;
@@ -48,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // get references
-
+         frag1 = new UserDetailsFragment(MainActivity.this);
+         frag2 = new RemindersFragment(MainActivity.this);
+         frag3 = new termsandconditions_fragment();
 
        myprefs = getSharedPreferences("Renewprefs", MODE_PRIVATE);
        editor = myprefs.edit();

@@ -71,6 +71,23 @@ public class DatabaseRepository {
 
 
 
+    public List<Log> getlogsfordate(String Date){
+
+
+        Getfor getfor = new Getfor(logDAO, Date);
+        try {
+            getfor.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        return arrayList;
+    }
+
+
 
 
 
@@ -117,7 +134,26 @@ public class DatabaseRepository {
 
 
 
+    private  static class Getfor extends AsyncTask<Void, Void, Void>{
 
+
+        LogDAO l;
+        String date;
+
+        Getfor(LogDAO logDAO, String date){
+
+            l = logDAO;
+            this.date = date;
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+          arrayList.addAll(l.getallfordate(date));
+            return null;
+        }
+    }
 
 
 

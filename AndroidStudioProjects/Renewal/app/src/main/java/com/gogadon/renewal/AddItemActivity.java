@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,10 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class AddItemActivity extends AppCompatActivity {
 
@@ -34,6 +39,7 @@ public class AddItemActivity extends AppCompatActivity {
     Spinner meals;
     Spinner thoughtspinner;
 
+    int numberoflogs;
 
     TextInputEditText time;
     TextInputEditText location;
@@ -48,11 +54,32 @@ public class AddItemActivity extends AppCompatActivity {
     Boolean edit;
     int id;
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
+    String todaysdate;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_log_dialog);
+
+        sharedPreferences = getSharedPreferences("Renewprefs", MODE_PRIVATE);
+        numberoflogs = sharedPreferences.getInt("items_logged",0);
+        editor = sharedPreferences.edit();
+
+
+
+        // get the date
+
+
+        Date today = Calendar.getInstance().getTime();
+        todaysdate = new SimpleDateFormat("dd:MM:yyyy").format(today).toString();
+
+
+
 
         edit =false;
         //get the layouts holding the edittextviews
@@ -148,6 +175,8 @@ public class AddItemActivity extends AppCompatActivity {
           foodanddrink.setText(b.getString("FoodDrink"));
           situation.setText(b.getString("Situation"));
 
+          todaysdate = b.getString("date");
+
           bswitch.setChecked(b.getBoolean("b"));
           vswitch.setChecked(b.getBoolean("v"));
           lswitch.setChecked(b.getBoolean("l"));
@@ -202,9 +231,7 @@ public class AddItemActivity extends AppCompatActivity {
 
                 if(!checkvalues()){
 
-
-
-                    Log l = new Log("testdate"
+                    Log l = new Log(todaysdate
                             ,meals.getSelectedItem().toString(),
                             thoughtspinner.getSelectedItem().toString(),
                             timeselected, location.getText().toString().trim(),
@@ -227,6 +254,10 @@ public class AddItemActivity extends AppCompatActivity {
 
                         dbc.insertlog(l);
                         System.out.println("log added");
+                        numberoflogs ++;
+                        System.out.println("Total logs = " + numberoflogs);
+                        editor.putInt("items_logged", numberoflogs);
+                        editor.commit();
 
                     }
 

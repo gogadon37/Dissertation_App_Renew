@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard_Fragment">
+    tools:context="com.gogadon.fragments.Dashboard_Fragment">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -19,11 +19,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/datetv"
         app:srcCompat="@mipmap/banner" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/datetv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
