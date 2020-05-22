@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -11,27 +12,32 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.gogadon.fragments.Badges_Fragment;
 import com.gogadon.fragments.Dashboard_Fragment;
 import com.gogadon.fragments.RemindersFragment;
 import com.gogadon.fragments.Stats_Fragment;
 import com.gogadon.fragments.UserDetailsFragment;
+import com.gogadon.roomdatabase.DatabaseRepository;
+import com.gogadon.roomdatabase.Log;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
-
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Dashboard extends AppCompatActivity {
+
     String Usersname;
     ActionBarDrawerToggle toggle;
     Dashboard_Fragment dashboard_fragment;
@@ -40,7 +46,7 @@ public class Dashboard extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Context c;
-
+    String currentdate;
 
 
 
@@ -55,11 +61,12 @@ public class Dashboard extends AppCompatActivity {
 
 
 
-        //check the date
+        //check the date and if it is diffrent from the last time the app was used then update the
+        // days used value
 
         String lastdateopened = sharedPreferences.getString("lastdateopened","nodate");
         Date today = Calendar.getInstance().getTime();
-        final String currentdate = new SimpleDateFormat("dd:MM:yyyy").format(today).toString();
+        currentdate = new SimpleDateFormat("dd:MM:yyyy").format(today).toString();
 
         if(!currentdate.equals(lastdateopened)){
 
@@ -71,46 +78,24 @@ public class Dashboard extends AppCompatActivity {
             editor.putInt("days_used", x);
             editor.putString("lastdateopened",currentdate);
             editor.commit();
-            System.out.println("Its a new day!");
 
         }
 
-
-
-        System.out.println("Todays date is " + currentdate);
 
         final MaterialToolbar materialToolbar = findViewById(R.id.dashboard_toolbar);
         final NavigationView navigationView = findViewById(R.id.navigation);
         final DrawerLayout drawerLayout = findViewById(R.id.drawerlayout_dash);
         String open = "open";
         final String close = "close";
-
-
         c = Dashboard.this;
 
 
         dashboard_fragment = new Dashboard_Fragment(Dashboard.this, currentdate);
         final FrameLayout frameLayout = findViewById(R.id.frameLayout2);
-
-
         setfragment(dashboard_fragment);
-
 
         View header = navigationView.getHeaderView(0);
         TextView textView = header.findViewById(R.id.username_textview);
-
-
-
-
-
-
-
-
-
-
-
-
-
         setSupportActionBar(materialToolbar);
 
 
@@ -126,6 +111,8 @@ public class Dashboard extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        // Change the fragment and title depending which item is clicked in the navigation drawer
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -157,60 +144,70 @@ public class Dashboard extends AppCompatActivity {
                         break;
 
                     case R.id.menu_stats:
-                        setfragment(new Stats_Fragment());
+                        setfragment(new Stats_Fragment(c));
                         materialToolbar.setTitle(Usersname + "'s Stats");
                         break;
 
+                    case  R.id.menu_sendlogs:
 
+                        AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(c);
+                        dialogbuilder.setTitle("Email Logs?").setMessage("Do you want to send the logs for the " +
+                                currentdate).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                writeemail(currentdate);
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).show();
                 }
 
-
                 drawerLayout.closeDrawer(GravityCompat.START, false);
-
-
                 return false;
             }
         });
 
 
+        // Check for badges as some are dependent on the number of days the user has used the application
         checkforbadges();
     }
 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-
         return super.onOptionsItemSelected(item);
-
     }
-
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
         // call to sync the state of the actiontoggle
         toggle.syncState();
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //dashboard_fragment.updateview();
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        dashboard_fragment.updateview(currentdate);
+//
+//    }
 
-    }
 
+    // Replace the fragment currently inside of the activty
 
     public void setfragment(Fragment f) {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout2, f);
-
         fragmentTransaction.commit();
 
     }
 
+
+    // Check if any badges have been earned and not shown to the user.
 
     public void checkforbadges() {
 
@@ -226,7 +223,6 @@ public class Dashboard extends AppCompatActivity {
         // 0 = badge not earned
         // 1 = badge earned but not shown
         // 2 = new badge dialog shown
-
 
         int gettingstarted = sharedPreferences.getInt("badge1", 0);
         int loggingpro = sharedPreferences.getInt("badge2", 0);
@@ -340,4 +336,55 @@ public void makeText(String message){
 
 }
 
+
+public void writeemail(String Date){
+
+    DatabaseRepository dbr = new DatabaseRepository(getApplication());
+    ArrayList<Log> logs = new ArrayList<Log>();
+    logs.addAll( dbr.getlogsfordate(Date));
+
+    // Create the email intent
+
+    String message = "Please take a look at my meal logs for " + Date;
+
+    for(Log log : logs){
+
+
+
+        message = message
+                          + "\n"
+                          + "\n" + log.getMeal() + ":" +"\n "
+                         + "\n" + " Date: " + log.getDate()
+                         + "\n" + " Time: " + log.getTime()
+                + "\n" + " Location: " + log.getLocation()
+        + "\n" + " Binge: " + log.getB() + "\n" + " Vomit: " + log.getV() + "\n" + " Laxative: " + log.getL() + "\n" + " Situation / Thoughts / Feelings: " + "\n" + log.getThoughts()+ "\n"+ "\n";
+
+
+    }
+
+
+
+    //intent.resolve activity
+
+    Intent email = new Intent(Intent.ACTION_SENDTO);
+
+
+    email.setData(Uri.parse("mailto:"));
+    email.putExtra(Intent.EXTRA_SUBJECT, "Meal Logs");
+    email.putExtra(Intent.EXTRA_TEXT, message);
+
+
+
+    // check and app on the users device can recive the intent
+
+    if(email.resolveActivity(getPackageManager())!= null) {
+
+        startActivity(email);
+
+    }else{
+
+        makeText("No Email Applications Found");
+
+    }
+}
 }

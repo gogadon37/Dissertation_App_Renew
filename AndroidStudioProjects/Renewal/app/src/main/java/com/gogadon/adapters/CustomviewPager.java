@@ -9,14 +9,15 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 public class CustomviewPager extends ViewPager {
+
     public CustomviewPager(@NonNull Context context) {
         super(context);
     }
 
-    public CustomviewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public CustomviewPager(@NonNull Context context, @Nullable AttributeSet attrs)
+    {
         super(context, attrs);
     }
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return false;

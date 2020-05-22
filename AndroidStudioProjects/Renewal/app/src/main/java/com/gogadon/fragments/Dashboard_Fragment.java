@@ -3,24 +3,17 @@ package com.gogadon.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.gogadon.adapters.Add_entry_fullscreen_entry;
 import com.gogadon.adapters.LayoutAdapter;
 import com.gogadon.renewal.AddItemActivity;
 import com.gogadon.renewal.Dashboard;
@@ -29,7 +22,6 @@ import com.gogadon.roomdatabase.DatabaseRepository;
 import com.gogadon.roomdatabase.Log;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -47,27 +39,26 @@ public class Dashboard_Fragment extends Fragment {
     static List<Log> logss;
     DatabaseRepository dbr;
     Dashboard parentactivity;
-
     TextView datetextview;
-
     String currentdate;
-
     String datecursor;
-
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-
-
     SimpleDateFormat simpleDateFormat;
     Date dateselected;
 
+
+
+    // Create the constructor and get the parent activity (Dashboard.class) and the current date
 
     public Dashboard_Fragment(Dashboard dash, String currentdate) {
 
         parentactivity = dash;
         this.currentdate = currentdate;
-
+        datecursor = currentdate;
     }
+
+    // Inflate the fragment for the dashboard fragment layout
 
     @Nullable
     @Override
@@ -75,37 +66,42 @@ public class Dashboard_Fragment extends Fragment {
         return inflater.inflate(R.layout.activity_dashboard__fragment, container, false);
     }
 
-    @Override
-    public boolean shouldShowRequestPermissionRationale(@NonNull String permission) {
-        return super.shouldShowRequestPermissionRationale(permission);
-    }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        datetextview = getActivity().findViewById(R.id.datetv);
+
+        // Get the list of logs from the database from the given current date.
+
          dbr = new DatabaseRepository(getActivity().getApplication());
-          logss = dbr.getlogsfordate(currentdate);
+         logss = dbr.getlogsfordate(currentdate);
 
 
+         // Set the sharedPreferences reference and editor reference
         sharedPreferences = getActivity().getSharedPreferences("Renewprefs", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
 
-
-
-        // check the dates and update the
+        // get the recycler reference and populate it using the Layout Adapter
 
         recyclerView = view.findViewById(R.id.dash_recycler);
         layoutAdapter = new LayoutAdapter(getContext(), logss, this);
         recyclerView.setAdapter(layoutAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        fab = view.findViewById(R.id.floatingActionButton);
 
+
+
+        // get a reference to the fab and launch the add item activity when it is clicked.
+
+        fab = view.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 Intent i = new Intent(getContext(), AddItemActivity.class);
                 startActivityForResult(i, 0);
@@ -114,8 +110,10 @@ public class Dashboard_Fragment extends Fragment {
             }
         });
 
-        datetextview = getActivity().findViewById(R.id.datetv);
 
+
+
+        // parse the date passed by the parent so it can be used by the calander class later.
 
        simpleDateFormat = new SimpleDateFormat("dd:MM:yyyy");
         try {
@@ -125,66 +123,71 @@ public class Dashboard_Fragment extends Fragment {
         }
 
 
+        // When the next button is clicked create a calander set it to the given date add one day to it then parse that date to a string
+        // Call the updateview method to update the recyclerview passing the new date.
+
         final MaterialButton next = getActivity().findViewById(R.id.nextday);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-
-
-                    System.out.println(dateselected);
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(dateselected);
                     calendar.add(Calendar.DATE, 1);
-
                     dateselected = calendar.getTime();
                     datecursor = simpleDateFormat.format(calendar.getTime());
-                    System.out.println(datecursor);
-                updateview(datecursor);
-
-
-
+                    updateview(datecursor);
 
             }
         });
 
 
+        // Same as above but the opposite
 
         MaterialButton previous = getActivity().findViewById(R.id.previousday);
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-
-                System.out.println(dateselected);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(dateselected);
                 calendar.add(Calendar.DATE, -1);
-
                 dateselected = calendar.getTime();
                 datecursor = simpleDateFormat.format(calendar.getTime());
-                System.out.println(datecursor);
-
                 updateview(datecursor);
-
-
-
-
 
             }
         });
 
+
+        // When the send logs button is clicked call the write email method passing in the current date the cursor is set to.
+
+        MaterialButton sendlogs = getActivity().findViewById(R.id.sendlogs);
+        sendlogs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parentactivity.writeemail(datecursor);
+                datecursor = currentdate;
+            }
+        });
 
 
 
     }
 
 
+
+
+    //-------------------------------------------------------------------------------------------------------//
+
+    // Class Methods
+
+    // Call the delete method of the database repository and pass in the log
+    // This method is called by the itemview and it passess in the id of the log it holds
+    // The adapter is then updated to reflect this change.
+
     public void delete(Log l){
 
-        System.out.println("Delete was clicked");
         DatabaseRepository  dbc = new DatabaseRepository(getActivity().getApplication());
         dbc.deletelog(l);
         logss.remove(l);
@@ -194,11 +197,13 @@ public class Dashboard_Fragment extends Fragment {
     }
 
 
+    // The update method launches the add item activty but passess some extras
+    // The extras contian the values of the log object
+    // This method is also called by the itemview and the data passed corresponds to the data the itemview contains.
+    // The activity is launched for result which this class then waits for.
     public void update(Log l){
 
         // Launch the additem activty and bundle the data contained inside of the itemview
-
-        System.out.println(l.getId_key() + " Is the key");
 
         Intent i = new Intent(getContext(), AddItemActivity.class);
         i.putExtra("Spinner1", l.getMeal());
@@ -218,6 +223,10 @@ public class Dashboard_Fragment extends Fragment {
 
     }
 
+
+    // When a result is returned the class must check it was successful
+    // If an item has been added or edited succesfully then set the date back to todays date, update the view
+    // Finally check for badges (Best time to check as most badges are related to adding items.)
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -244,6 +253,11 @@ public class Dashboard_Fragment extends Fragment {
 
     }
 
+
+    // reset the logs list, get a new list from the database and change the adapter
+    // set the date selected back to the current date.
+
+
     public void updateview(String date){
 
         logss.clear();
@@ -263,16 +277,12 @@ public class Dashboard_Fragment extends Fragment {
 
         }
 
-   }
+        datecursor = date;
 
-
-
-
-
-
-
-
-
-
-
+        try {
+            dateselected = simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }

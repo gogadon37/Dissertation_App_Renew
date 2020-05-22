@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".termsandconditions_fragment">
+    tools:context="com.gogadon.fragments.termsandconditions_fragment">
 
     <ScrollView
         android:layout_width="match_parent"

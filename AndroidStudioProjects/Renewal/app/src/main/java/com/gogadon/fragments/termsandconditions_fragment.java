@@ -1,4 +1,4 @@
-package com.gogadon.renewal;
+package com.gogadon.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,14 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.gogadon.renewal.R;
+
 public class termsandconditions_fragment extends Fragment {
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
+    // inflate the view
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -5,22 +5,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.gogadon.adapters.CustomviewPager;
 import com.gogadon.fragments.RemindersFragment;
 import com.gogadon.fragments.UserDetailsFragment;
+import com.gogadon.fragments.termsandconditions_fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class MainActivity extends AppCompatActivity {
-
 
     // create variables
     private final int numberofpages = 3;
@@ -36,9 +34,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView icon3;
     SharedPreferences myprefs;
     SharedPreferences.Editor editor;
-
     MaterialAlertDialogBuilder builder;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,22 +46,14 @@ public class MainActivity extends AppCompatActivity {
          frag2 = new RemindersFragment(MainActivity.this);
          frag3 = new termsandconditions_fragment();
 
-       myprefs = getSharedPreferences("Renewprefs", MODE_PRIVATE);
-       editor = myprefs.edit();
+        myprefs = getSharedPreferences("Renewprefs", MODE_PRIVATE);
+        editor = myprefs.edit();
 
-
-       if(myprefs.getBoolean("finishedsetup", false)){
-
+        if(myprefs.getBoolean("finishedsetup", false)){
            Intent i = new Intent(MainActivity.this, Dashboard.class);
            startActivity(i);
            finish();
-
-
        }
-
-
-
-
 
          viewPager = (CustomviewPager) findViewById(R.id.viewpager);
          viewPager.setAdapter(new pageradapter(getSupportFragmentManager()));
@@ -76,13 +64,16 @@ public class MainActivity extends AppCompatActivity {
          icon2 = findViewById(R.id.page2_image);
          icon3 = findViewById(R.id.page3_image);
 
-
         final MaterialButton next = findViewById(R.id.next_button);
         final MaterialButton back = findViewById(R.id.back_button);
+
+
+        // when next is clicked update the item in the viewpager and update the progress dots
+        // when the final time occurs save the data from the first fragment.
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 System.out.println("Button Clicked");
 
@@ -122,18 +113,9 @@ public class MainActivity extends AppCompatActivity {
                     Intent i = new Intent(MainActivity.this, Dashboard.class);
                     startActivity(i);
                     finish();
-
-                    // launch the dashboard
-
-
                 }
-
-
-
             }
         });
-
-
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -157,18 +139,9 @@ public class MainActivity extends AppCompatActivity {
                     next.setText("next");
 
                 }
-
-
-
-
             }
         });
-
-
     }
-
-
-
 
     private class pageradapter extends FragmentStatePagerAdapter {
         public pageradapter(FragmentManager fm) {
@@ -192,13 +165,6 @@ public class MainActivity extends AppCompatActivity {
                 return frag3;
 
             }
-
-
-
-
-
-
-
         }
 
         @Override
@@ -206,21 +172,4 @@ public class MainActivity extends AppCompatActivity {
             return numberofpages;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-

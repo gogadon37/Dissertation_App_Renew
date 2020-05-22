@@ -1,4 +1,4 @@
-package com.gogadon.renewal;
+package com.gogadon.adapters;
 
 public class UserFriendlyTimeConverter {
 

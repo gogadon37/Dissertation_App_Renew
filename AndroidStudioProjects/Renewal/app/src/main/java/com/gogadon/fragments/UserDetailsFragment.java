@@ -3,7 +3,6 @@ package com.gogadon.fragments;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,16 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.gogadon.renewal.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import org.w3c.dom.Text;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class UserDetailsFragment extends Fragment {
 
@@ -33,27 +27,17 @@ public class UserDetailsFragment extends Fragment {
     MaterialToolbar mt;
     SharedPreferences sharedPreferences ;
     SharedPreferences.Editor editor ;
-
-    //name
     TextInputEditText textInputEditText;
     TextInputLayout namelayout;
-
-    //password
     TextInputLayout passwordlayout;
     TextInputEditText passwordtext;
-
-    //confirmpass
     TextInputLayout conpasswordlayout;
     TextInputEditText conpasswordtext;
-
-
-    //email
     TextInputLayout emaillayout;
     TextInputEditText emailedittext;
 
 
-
-
+    // Create Getters to return the name password and email
 
     public String getName() {
         return finname;
@@ -70,6 +54,8 @@ public class UserDetailsFragment extends Fragment {
 
 
 
+    // Create a constructor and get the context of the parent activity
+
    public UserDetailsFragment(Context c){
 
         setup = true;
@@ -77,8 +63,9 @@ public class UserDetailsFragment extends Fragment {
     }
 
 
-    public UserDetailsFragment(boolean setup, MaterialToolbar materialToolbar, Context c){
+    // Create a second constructor which is used to create the fragment after the initial setup
 
+    public UserDetailsFragment(boolean setup, MaterialToolbar materialToolbar, Context c){
     this.setup = setup;
     mt = materialToolbar;
     this.c = c;
@@ -90,10 +77,6 @@ public class UserDetailsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
-
-
         return inflater.inflate(R.layout.activity_user_details_fragment, container, false);
     }
 
@@ -103,24 +86,20 @@ public class UserDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
          updatebutton = getActivity().findViewById(R.id.update_button);
-
          passwordlayout = getActivity().findViewById(R.id.password_layout);
          passwordtext = getActivity().findViewById(R.id.password_textinput);
-
          textInputEditText = getActivity().findViewById(R.id.time_input);
          namelayout = getActivity().findViewById(R.id.time_layout);
-
          conpasswordlayout = getActivity().findViewById(R.id.conpassword_layout);
          conpasswordtext = getActivity().findViewById(R.id.conpassword_textinput);
-
          emailedittext = getActivity().findViewById(R.id.email_textinput);
-
-
-        sharedPreferences = c.getSharedPreferences("Renewprefs", c.MODE_PRIVATE);
+         sharedPreferences = c.getSharedPreferences("Renewprefs", c.MODE_PRIVATE);
          editor = sharedPreferences.edit();
 
 
 
+         // If the fragment is not being displayed for the first time to the user
+        // get the users data and populate the fields.
 
         if(!setup){
 
@@ -130,9 +109,6 @@ public class UserDetailsFragment extends Fragment {
             passwordtext.setText(sharedPreferences.getString("password", ""));
             conpasswordtext.setText(sharedPreferences.getString("password", ""));
             emailedittext.setText(sharedPreferences.getString("email", ""));
-
-
-
 
             updatebutton.setVisibility(View.VISIBLE);
             updatebutton.setOnClickListener(new View.OnClickListener() {
@@ -144,40 +120,14 @@ public class UserDetailsFragment extends Fragment {
                     }
                 }
             });
-
-
         }
-
-
-
-    }
-
-    public void savedata(){
-
-
-
-        editor.putString("name", getName());
-        editor.putString("password",getPassword());
-        editor.putString("email",getEmail());
-        editor.putBoolean("finishedsetup", true);
-        editor.commit();
-
-
-        if(!setup){
-
-            mt.setTitle(getName() + "'s Settings");
-            Toast t = Toast.makeText(getContext(), "Settings Updated" , Toast.LENGTH_SHORT);
-
-
-
-
-            t.show();
-        }
-
-
     }
 
 
+
+
+
+    // Verify that the data entered into the form meets the requirements set.
 
 
     public boolean verifypageone(){
@@ -218,8 +168,6 @@ public class UserDetailsFragment extends Fragment {
         }
 
         // check the user has confirmed the password and it matches the password entered above
-
-
         String conpassword = conpasswordtext.getText().toString().trim();
 
         if(conpassword.isEmpty()){
@@ -260,9 +208,23 @@ public class UserDetailsFragment extends Fragment {
             return false;
 
         }
-
-
     }
 
+    // Save the data from inside of the boxes into the shared preferences.
 
+    public void savedata(){
+
+        editor.putString("name", getName());
+        editor.putString("password",getPassword());
+        editor.putString("email",getEmail());
+        editor.putBoolean("finishedsetup", true);
+        editor.commit();
+
+        if(!setup){
+
+            mt.setTitle(getName() + "'s Settings");
+            Toast t = Toast.makeText(getContext(), "Settings Updated" , Toast.LENGTH_SHORT);
+            t.show();
+        }
+    }
 }

@@ -23,44 +23,46 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.customhold
     Context context;
     Dashboard_Fragment d;
     List<Log> logs;
-    String[] names = {"Breakfast","Morning Snack", "Lunch", "Afternoon Snack", "Dinner", "Evening Snack"};
 
+
+    // Define the constructor to get the context, the parent class and the list of logs
 
     public LayoutAdapter(Context c , List<Log> logList, Dashboard_Fragment dbf) {
 
         d =dbf;
-      context = c;
-      logs =logList;
+        context = c;
+        logs =logList;
 
     }
+
+
+    // Inflate the view and pass it to the returned customviewholder
 
     @NonNull
     @Override
     public customholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.listitem, parent, false);
-
-      // return new customholder passing in the view
        return new customholder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final customholder holder, int position) {
 
+        // Set the text for the current item by calling the references defined in the custom viewholder class.
 
         final Log l =logs.get(position);
-
         holder.title.setText(l.getMeal());
-
-
         holder.timeeaten.setText(l.getTime());
         holder.location.setText(l.getLocation());
         holder.binge.setText(booleantoyesno(l.getB()));
         holder.vomit.setText(booleantoyesno(l.getV()));
         holder.laxative.setText(booleantoyesno(l.getL()));
-         holder.feelings.setText(l.getThoughts());
-         holder.foodanddrink.setText(l.getFooddrink());
+        holder.feelings.setText(l.getThoughts());
+        holder.foodanddrink.setText(l.getFooddrink());
 
+
+         // Display a colour based on the mood of the user for that meal.
 
         switch (l.getMood()){
 
@@ -71,9 +73,10 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.customhold
 
             default: holder.moodimage.setImageResource(R.mipmap.badmeal);
 
-
         }
 
+
+        // set the edit and delete buttons, calling the parent activities methods
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,11 +98,7 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.customhold
         });
 
 
-
-
-
-
-
+        // Make the top of the card clickable and toggle the show/hide of the bottom of the card.
 
         holder.toplayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,9 +120,6 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.customhold
                     holder.hidden = true;
                 }
 
-
-
-
             }
         });
 
@@ -132,6 +128,13 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.customhold
 
 
     }
+
+
+    //======================================================================================================//w
+
+
+    // Simple method to convert a boolean to yes or no string to be more userfriendly.w
+
     public String booleantoyesno (Boolean b){
 
         if(b){
@@ -144,10 +147,16 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.customhold
         }
 
     }
+
+    // The number of items is equal to the size of the log
+
     @Override
     public int getItemCount() {
         return logs.size();
     }
+
+
+    // Define a customviewholder class to hold references to the widgets.
 
     public class customholder extends  RecyclerView.ViewHolder{
 
@@ -156,10 +165,8 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.customhold
         boolean hidden;
         TextView title;
         LinearLayout toplayout;
-
         MaterialButton edit;
         MaterialButton delete;
-
         TextView timeeaten;
         TextView location;
         TextView binge;
@@ -169,7 +176,7 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.customhold
         TextView foodanddrink;
         ImageView moodimage;
 
-
+        //Define a customviewholder constructor and set the references to each widget inside
 
         public customholder(@NonNull View itemView) {
             super(itemView);

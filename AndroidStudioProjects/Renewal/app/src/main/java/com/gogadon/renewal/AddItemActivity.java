@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import com.gogadon.adapters.UserFriendlyTimeConverter;
 import com.gogadon.roomdatabase.DatabaseRepository;
 import com.gogadon.roomdatabase.Log;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -20,43 +21,33 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
 public class AddItemActivity extends AppCompatActivity {
 
-     UserFriendlyTimeConverter userFriendlyTimeConverter;
-
+    UserFriendlyTimeConverter userFriendlyTimeConverter;
     TextInputLayout timelayout;
     String timeselected;
     TextInputLayout locationlayout;
     TextInputLayout foodlayout;
     TextInputLayout situationlayout;
-
     Spinner meals;
     Spinner thoughtspinner;
-
     int numberoflogs;
-
     TextInputEditText time;
     TextInputEditText location;
     TextInputEditText foodanddrink;
     TextInputEditText situation;
-
     SwitchMaterial bswitch;
     SwitchMaterial lswitch;
     SwitchMaterial vswitch;
     DatabaseRepository dbc;
-
     Boolean edit;
     int id;
-
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-
     String todaysdate;
 
 
@@ -153,38 +144,34 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
-        // check if anything was bundled with the call
+        // check if anything was bundled with the call if it has been then the activity has been
+        // launched with the intention of editing an activity so retrive the values from inside the bundle
+        // and set the widgets text etc to match.
 
         Bundle b = getIntent().getExtras();
         if(b == null) System.out.println("BundleEmpty");
         else {
 
             // if something has been bundled then the activty has been launched as an edit request
-
             getSupportActionBar().setTitle("Edit Log");
-
           meals.setSelection(getmealposition(b.getString("Spinner1")));
-
-          System.out.println("Is " + b.getString("Spinner2"));
-
           thoughtspinner.setSelection(getmoodposition(b.getString("Spinner2")));
-
           timeselected = b.getString("Time");
           time.setText(b.getString("Time"));
           location.setText(b.getString("Location"));
           foodanddrink.setText(b.getString("FoodDrink"));
           situation.setText(b.getString("Situation"));
-
           todaysdate = b.getString("date");
-
           bswitch.setChecked(b.getBoolean("b"));
           vswitch.setChecked(b.getBoolean("v"));
           lswitch.setChecked(b.getBoolean("l"));
-
           id = b.getInt("Id");
           edit = true;
         }
     }
+
+
+    // Verify the values entered into the form
 
     public Boolean checkvalues(){
 
@@ -221,6 +208,10 @@ public class AddItemActivity extends AppCompatActivity {
         return errorfound;
     }
 
+
+
+    // When the save button is clicked... save the log if a new log or save over the old log if an edited log
+    // return result is ok! and close this activity.
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -265,12 +256,10 @@ public class AddItemActivity extends AppCompatActivity {
                     finish();
                 }
 
-
             break;
             default: finish();
             break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -282,6 +271,8 @@ public class AddItemActivity extends AppCompatActivity {
         return true;
     }
 
+
+    // Get the positions for the meal
 
     public int getmealposition (String mealstring ){
 
@@ -300,6 +291,7 @@ public class AddItemActivity extends AppCompatActivity {
         return 1;
     }
 
+    // return the positon for the thoughts
 
     public int getmoodposition (String mealstring ){
 
@@ -314,9 +306,4 @@ public class AddItemActivity extends AppCompatActivity {
 
         return 1;
     }
-
-
-
-
-
 }

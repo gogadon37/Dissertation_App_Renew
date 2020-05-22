@@ -2,22 +2,16 @@ package com.gogadon.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TimePicker;
-
 import com.gogadon.renewal.R;
 
 public class RemindersFragment extends Fragment {
@@ -29,7 +23,6 @@ public class RemindersFragment extends Fragment {
     String afternoonsnacktime = "15:0";
     String dinnertime = "18:0";
     String eveningsnacktime = "20:0";
-
     CheckBox breakfastcheckbox;
     CheckBox morningsnackcheckbox;
     CheckBox lunchcheckbox;
@@ -38,20 +31,24 @@ public class RemindersFragment extends Fragment {
     CheckBox dinnercheckbox;
 
 
+    // Create a constructor and get the parent activities context
+
     public RemindersFragment(Context context) {
-
         appcontext = context;
-
     }
+
+
+    // Inflate the view for the reminders fragment layout
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
-
         return inflater.inflate(R.layout.activity_reminders_fragment, container, false);
     }
+
+
+    // Get the references for the widgets and call the gettime method when an edit icon is clicked.
+    // Change the time selected by the user in the dialog.
 
 
     @Override
@@ -71,10 +68,6 @@ public class RemindersFragment extends Fragment {
         afternoonsnackcheckbox = getActivity().findViewById(R.id.checkBox_AfternoonSnack);
         dinnercheckbox  = getActivity().findViewById(R.id.checkBox_Dinner);
         eveningsnackCheckBox = getActivity().findViewById(R.id.checkBox_EveningSnack);
-
-
-
-
 
         breakfastedit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,24 +111,14 @@ public class RemindersFragment extends Fragment {
                 gettime(5, "Evening Snack ");
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
-    public String gettime(final int position, String title) {
+
+
+    // Create a timepickerdialog and set the text of the corresponding timer for the edit which was clicked.
+    // the userfriendlytime method converts the time returned into an am or pm value.
+
+    public void gettime(final int position, String title) {
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(appcontext, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -170,22 +153,17 @@ public class RemindersFragment extends Fragment {
 
                 }
 
-
-
-
-
-
             }
         }, 12, 0, false);
 
         timePickerDialog.setTitle(title);
         timePickerDialog.setIcon(R.drawable.ic_action_reminder);
         timePickerDialog.show();
-
-        return "";
     }
 
 
+    // Given the hour of the day and the minuets calculate if the item is am or pm and return the
+    // Value to the user in a userfriendly string.
 
     public String getUserFriendlyTime(int hourOfDay, int minute){
 
@@ -243,10 +221,7 @@ public class RemindersFragment extends Fragment {
             System.out.println("PM");
 
         }
-
             return  userfriendlytime;
     }
-
-
 
 }

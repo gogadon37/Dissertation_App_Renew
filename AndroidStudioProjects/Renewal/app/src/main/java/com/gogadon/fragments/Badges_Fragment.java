@@ -8,19 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.gogadon.renewal.R;
-import com.google.android.material.card.MaterialCardView;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class Badges_Fragment extends Fragment {
 
     Context context;
+    // return the inflatedview for the badgesfragment
 
     @Nullable
     @Override
@@ -29,11 +26,14 @@ public class Badges_Fragment extends Fragment {
         return inflater.inflate(R.layout.badges_fragment, container, false);
     }
 
+    // Define a constructor and get the context of the parent activity.
+
     public Badges_Fragment(Context c){
 
         context = c;
     }
 
+    // Get the references for the widgets and change the layout accordingly.
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -59,8 +59,6 @@ public class Badges_Fragment extends Fragment {
         ImageView badge6imageview = getView().findViewById(R.id.badge6_image);
         TextView badge6textview = getView().findViewById(R.id.badge6_text);
 
-
-
         // Get the values for if the user has achived the badge
 
       SharedPreferences sharedPreferences = context.getSharedPreferences("Renewprefs", MODE_PRIVATE);
@@ -72,6 +70,7 @@ public class Badges_Fragment extends Fragment {
         int firstweek = sharedPreferences.getInt("badge5", 0);
         int twoweeks = sharedPreferences.getInt("badge6", 0);
 
+        // Update the titles and images depending on if the badges have been earned.
 
         if(gettingstarted >=2) { badge1imageview.setImageResource(R.drawable.badge01); badge1textview.setText("Getting Started!");}
         if(loggingpro >=2){ badge2imageview.setImageResource(R.drawable.badge02); badge2textview.setText("Logging Pro!");}
@@ -79,9 +78,6 @@ public class Badges_Fragment extends Fragment {
         if(secondday >=2) {badge4imageview.setImageResource(R.drawable.badge4); badge4textview.setText("Second Day!");}
         if(firstweek >=2) {badge5imageview.setImageResource(R.drawable.badge05); badge5textview.setText("First Week!");}
         if(twoweeks >=2) {badge6imageview.setImageResource(R.drawable.badge06); badge6textview.setText("Two Weeks!");}
-
-
-
 
     }
 }
