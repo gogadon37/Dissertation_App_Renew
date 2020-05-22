@@ -140,7 +140,7 @@ public class Dashboard extends AppCompatActivity {
                         break;
 
                     case R.id.menu_badges:
-                        setfragment(new Badges_Fragment());
+                        setfragment(new Badges_Fragment (c));
                         materialToolbar.setTitle(Usersname + "'s Badges");
                         break;
 
@@ -244,7 +244,7 @@ public class Dashboard extends AppCompatActivity {
 
             if (numberofitemslogged > 0) {
                 // congrats the user has earned this reward!!
-                makeText();
+                makeText("Getting Started Badge Earned!");
                 // set the badge to 3 to prevent it being reshown to the user
                 editor.putInt("badge1", 3);
                 changes = true;
@@ -258,7 +258,7 @@ public class Dashboard extends AppCompatActivity {
 
             if (numberofitemslogged >= 6) {
                 // congrats the user has earned this reward!!
-                makeText();
+                makeText("Pro Logger Badge Earned!");
                 // set the badge to 3 to prevent it being reshown to the user
                 editor.putInt("badge2", 3);
                 changes = true;
@@ -272,7 +272,7 @@ public class Dashboard extends AppCompatActivity {
         if (emailer == 2) {
 
 
-            makeText();
+            makeText("Connected Badge Earned!");
             // set the badge to 3 to prevent it being reshown to the user
             editor.putInt("badge3", 3);
             changes = true;
@@ -281,12 +281,16 @@ public class Dashboard extends AppCompatActivity {
 
         // Badge 4 : Second Day (The user opens the app for a second day)
 
-        if (secondday == 2) {
+        if (secondday != 3) {
 
-            makeText();
+            makeText("Second Day Badge Earned!");
             // set the badge to 3 to prevent it being reshown to the user
-            editor.putInt("badge4", 3);
-            changes = true;
+            if(numberofdaysused >1){
+                editor.putInt("badge4", 3);
+                changes = true;
+
+            }
+
         }
 
 
@@ -294,8 +298,8 @@ public class Dashboard extends AppCompatActivity {
 
         if (firstweek != 3) {
 
-            if(numberofdaysused == 1){
-                makeText();
+            if(numberofdaysused > 6){
+                makeText("First Week Badge Earned!");
                 // set the badge to 3 to prevent it being reshown to the user
                 editor.putInt("badge5", 3);
                 changes = true;
@@ -308,18 +312,18 @@ public class Dashboard extends AppCompatActivity {
 
         // Badge 6 : Two Week Pro (Two Week Pro)
 
-        if (twoweeks == 2) {
+        if (twoweeks !=3) {
 
-            makeText();
-            // set the badge to 3 to prevent it being reshown to the user
-            editor.putInt("badge6", 3);
-            changes = true;
+            if(numberofdaysused > 13){
+                makeText("Two Weeks Badge Earned!");
+                // set the badge to 3 to prevent it being reshown to the user
+                editor.putInt("badge6", 3);
+                changes = true;
+
+
+            }
+
         }
-
-
-
-
-
 
         if(changes) editor.commit();
 
@@ -329,9 +333,9 @@ public class Dashboard extends AppCompatActivity {
 
 
 
-public void makeText(){
+public void makeText(String message){
 
-    Toast.makeText(this, "Getting Started Badge Earned", Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
 
 }
