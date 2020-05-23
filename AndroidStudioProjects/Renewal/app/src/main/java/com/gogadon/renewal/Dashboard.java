@@ -2,25 +2,18 @@ package com.gogadon.renewal;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.gogadon.fragments.Badges_Fragment;
 import com.gogadon.fragments.Dashboard_Fragment;
@@ -41,12 +34,16 @@ public class Dashboard extends AppCompatActivity {
     String Usersname;
     ActionBarDrawerToggle toggle;
     Dashboard_Fragment dashboard_fragment;
+    Badges_Fragment badges_fragment;
+    RemindersFragment remindersFragment;
+    Stats_Fragment stats_fragment;
+    UserDetailsFragment userDetailsFragment;
     FragmentTransaction fragmentTransaction;
-    ActionBar actionBar;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Context c;
     String currentdate;
+    int whichfrag;
 
 
 
@@ -90,12 +87,50 @@ public class Dashboard extends AppCompatActivity {
         c = Dashboard.this;
 
 
-        dashboard_fragment = new Dashboard_Fragment(Dashboard.this, currentdate);
-        final FrameLayout frameLayout = findViewById(R.id.frameLayout2);
-        setfragment(dashboard_fragment);
+        // if the activity has been resotred then get the fragement else make a new one
 
-        View header = navigationView.getHeaderView(0);
-        TextView textView = header.findViewById(R.id.username_textview);
+
+         if(savedInstanceState == null){
+
+             dashboard_fragment = new Dashboard_Fragment(Dashboard.this, currentdate);
+             badges_fragment = new Badges_Fragment(c);
+             remindersFragment = new RemindersFragment(c);
+             stats_fragment = new Stats_Fragment(c);
+             userDetailsFragment = new UserDetailsFragment(false,materialToolbar, c);
+
+         }else {
+
+             // Only one of the fragments will still be around so check that the refernce is not null for them
+             // if it is null then set the new fragment.
+
+            dashboard_fragment = (Dashboard_Fragment) getSupportFragmentManager().findFragmentByTag("frag1");
+            if(dashboard_fragment !=null) dashboard_fragment.setParentactivity(this);
+
+            badges_fragment = (Badges_Fragment) getSupportFragmentManager().findFragmentByTag("frag2");
+            if(badges_fragment!= null)  badges_fragment.setContext(c);
+
+            remindersFragment = (RemindersFragment) getSupportFragmentManager().findFragmentByTag("frag3");
+            if(remindersFragment != null) remindersFragment.setContext(c);
+
+            stats_fragment = (Stats_Fragment)getSupportFragmentManager().findFragmentByTag("frag4");
+            if(stats_fragment != null) stats_fragment.setContext(c);
+
+            userDetailsFragment = (UserDetailsFragment) getSupportFragmentManager().findFragmentByTag("frag5");
+            if (userDetailsFragment != null) userDetailsFragment.setContext(c);
+
+            if(dashboard_fragment == null)  dashboard_fragment = new Dashboard_Fragment(Dashboard.this, currentdate);
+            if(badges_fragment == null)   badges_fragment = new Badges_Fragment(c);
+            if(remindersFragment == null)  remindersFragment = new RemindersFragment(c);
+            if(stats_fragment == null)       stats_fragment = new Stats_Fragment(c);
+            if(userDetailsFragment == null) userDetailsFragment = new UserDetailsFragment(c);
+
+
+         }
+
+
+
+
+        setfragment(dashboard_fragment, "frag1");
         setSupportActionBar(materialToolbar);
 
 
@@ -121,48 +156,32 @@ public class Dashboard extends AppCompatActivity {
                 switch (item.getItemId()) {
 
                     case R.id.menu_reminders:
-                        setfragment(new RemindersFragment(c));
+                        setfragment(remindersFragment,"frag3");
                         materialToolbar.setTitle(Usersname + "'s Reminders");
 
                         break;
 
                     case R.id.menu_badges:
-                        setfragment(new Badges_Fragment (c));
+                        setfragment(badges_fragment, "frag2");
                         materialToolbar.setTitle(Usersname + "'s Badges");
                         break;
 
                     case R.id.menu_home:
-                        setfragment(new Dashboard_Fragment(Dashboard.this, currentdate));
+                        setfragment(dashboard_fragment, "frag1");
                         Usersname = getSharedPreferences("Renewprefs", MODE_PRIVATE).getString("name", "user1");
                         materialToolbar.setTitle(Usersname + "'s Meals");
                         break;
 
                     case R.id.menu_settings:
-                        setfragment(new UserDetailsFragment(false, materialToolbar, Dashboard.this));
+                        setfragment(userDetailsFragment, "frag5");
                         materialToolbar.setTitle(Usersname + "'s Settings");
                         checkforbadges();
                         break;
 
                     case R.id.menu_stats:
-                        setfragment(new Stats_Fragment(c));
+                        setfragment(stats_fragment, "frag4");
                         materialToolbar.setTitle(Usersname + "'s Stats");
                         break;
-
-                    case  R.id.menu_sendlogs:
-
-                        AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(c);
-                        dialogbuilder.setTitle("Email Logs?").setMessage("Do you want to send the logs for the " +
-                                currentdate).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                writeemail(currentdate);
-                            }
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        }).show();
                 }
 
                 drawerLayout.closeDrawer(GravityCompat.START, false);
@@ -199,9 +218,9 @@ public class Dashboard extends AppCompatActivity {
 
     // Replace the fragment currently inside of the activty
 
-    public void setfragment(Fragment f) {
+    public void setfragment(Fragment f ,String tag) {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout2, f);
+        fragmentTransaction.replace(R.id.frameLayout2, f, tag);
         fragmentTransaction.commit();
 
     }
@@ -339,6 +358,9 @@ public void makeText(String message){
 
 public void writeemail(String Date){
 
+
+
+
     DatabaseRepository dbr = new DatabaseRepository(getApplication());
     ArrayList<Log> logs = new ArrayList<Log>();
     logs.addAll( dbr.getlogsfordate(Date));
@@ -380,6 +402,14 @@ public void writeemail(String Date){
     if(email.resolveActivity(getPackageManager())!= null) {
 
         startActivity(email);
+        if(  sharedPreferences.getInt("badge3", 0) == 0){
+
+            editor.putInt("badge3",2);
+            editor.commit();
+
+        }
+
+
 
     }else{
 
@@ -387,4 +417,6 @@ public void writeemail(String Date){
 
     }
 }
+
+
 }

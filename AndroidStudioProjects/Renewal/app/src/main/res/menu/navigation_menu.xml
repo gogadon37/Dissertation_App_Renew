@@ -26,11 +26,4 @@
         android:title="Settings" />
 
 
-    <item
-        android:id="@+id/menu_sendlogs"
-        android:icon="@drawable/ic_action_settings"
-        android:title="Send Logs" />
-
-
-
 </menu>

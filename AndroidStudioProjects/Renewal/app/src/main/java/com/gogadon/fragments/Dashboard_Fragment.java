@@ -38,6 +38,11 @@ public class Dashboard_Fragment extends Fragment {
     LayoutAdapter layoutAdapter;
     static List<Log> logss;
     DatabaseRepository dbr;
+
+    public void setParentactivity(Dashboard parentactivity) {
+        this.parentactivity = parentactivity;
+    }
+
     Dashboard parentactivity;
     TextView datetextview;
     String currentdate;
@@ -50,6 +55,17 @@ public class Dashboard_Fragment extends Fragment {
 
 
     // Create the constructor and get the parent activity (Dashboard.class) and the current date
+
+
+    public Dashboard_Fragment(){
+
+        Date d = new Date();
+        currentdate = new SimpleDateFormat("dd:MM:yyyy").format(d).toString();
+
+
+    }
+
+
 
     public Dashboard_Fragment(Dashboard dash, String currentdate) {
 

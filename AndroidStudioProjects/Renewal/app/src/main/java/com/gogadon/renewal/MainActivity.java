@@ -34,26 +34,29 @@ public class MainActivity extends AppCompatActivity {
     ImageView icon3;
     SharedPreferences myprefs;
     SharedPreferences.Editor editor;
-    MaterialAlertDialogBuilder builder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // get references
-         frag1 = new UserDetailsFragment(MainActivity.this);
-         frag2 = new RemindersFragment(MainActivity.this);
-         frag3 = new termsandconditions_fragment();
-
         myprefs = getSharedPreferences("Renewprefs", MODE_PRIVATE);
         editor = myprefs.edit();
 
         if(myprefs.getBoolean("finishedsetup", false)){
-           Intent i = new Intent(MainActivity.this, Dashboard.class);
-           startActivity(i);
-           finish();
+
+            // Start the login activity.
+            Intent i = new Intent(MainActivity.this, Login_Activity.class);
+            startActivity(i);
+
+            finish();
        }
+
+
+        frag1 = new UserDetailsFragment(MainActivity.this);
+        frag2 = new RemindersFragment(MainActivity.this);
+        frag3 = new termsandconditions_fragment();
 
          viewPager = (CustomviewPager) findViewById(R.id.viewpager);
          viewPager.setAdapter(new pageradapter(getSupportFragmentManager()));

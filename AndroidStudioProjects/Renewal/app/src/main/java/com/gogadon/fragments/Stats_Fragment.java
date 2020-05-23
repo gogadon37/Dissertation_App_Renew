@@ -18,10 +18,18 @@ public class Stats_Fragment extends Fragment {
 
     // Global Variables used to instantiate the sharedpreferences.
     SharedPreferences sharedPreferences;
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     Context context;
 
 
     // Create a constructor and get the context of the parents activity.
+
+
+    public Stats_Fragment (){}
 
     public  Stats_Fragment (Context c){
 

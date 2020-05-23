@@ -16,6 +16,10 @@ import com.gogadon.renewal.R;
 
 public class RemindersFragment extends Fragment {
 
+    public void setContext(Context appcontext) {
+        this.appcontext = appcontext;
+    }
+
     Context appcontext;
     String breakfasttime = "8:0";
     String morningsnacktime = "11:0";
@@ -32,6 +36,8 @@ public class RemindersFragment extends Fragment {
 
 
     // Create a constructor and get the parent activities context
+
+    public RemindersFragment(){}
 
     public RemindersFragment(Context context) {
         appcontext = context;

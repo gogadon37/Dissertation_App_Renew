@@ -16,6 +16,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Badges_Fragment extends Fragment {
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     Context context;
     // return the inflatedview for the badgesfragment
 
@@ -27,6 +31,9 @@ public class Badges_Fragment extends Fragment {
     }
 
     // Define a constructor and get the context of the parent activity.
+
+    public Badges_Fragment(){}
+
 
     public Badges_Fragment(Context c){
 

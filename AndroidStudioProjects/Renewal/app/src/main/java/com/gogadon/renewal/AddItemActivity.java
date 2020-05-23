@@ -2,7 +2,6 @@ package com.gogadon.renewal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -61,16 +60,9 @@ public class AddItemActivity extends AppCompatActivity {
         numberoflogs = sharedPreferences.getInt("items_logged",0);
         editor = sharedPreferences.edit();
 
-
-
         // get the date
-
-
         Date today = Calendar.getInstance().getTime();
         todaysdate = new SimpleDateFormat("dd:MM:yyyy").format(today).toString();
-
-
-
 
         edit =false;
         //get the layouts holding the edittextviews
@@ -302,8 +294,6 @@ public class AddItemActivity extends AppCompatActivity {
             case "bad":  return 2;
 
         }
-
-
         return 1;
     }
 }

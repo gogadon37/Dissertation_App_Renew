@@ -23,6 +23,11 @@ public class UserDetailsFragment extends Fragment {
     String finemail;
     boolean setup;
     MaterialButton updatebutton;
+
+    public void setContext(Context c) {
+        this.c = c;
+    }
+
     Context c;
     MaterialToolbar mt;
     SharedPreferences sharedPreferences ;
@@ -52,6 +57,8 @@ public class UserDetailsFragment extends Fragment {
         return finemail;
     }
 
+
+    public UserDetailsFragment(){}
 
 
     // Create a constructor and get the context of the parent activity
@@ -109,7 +116,6 @@ public class UserDetailsFragment extends Fragment {
             passwordtext.setText(sharedPreferences.getString("password", ""));
             conpasswordtext.setText(sharedPreferences.getString("password", ""));
             emailedittext.setText(sharedPreferences.getString("email", ""));
-
             updatebutton.setVisibility(View.VISIBLE);
             updatebutton.setOnClickListener(new View.OnClickListener() {
                 @Override
