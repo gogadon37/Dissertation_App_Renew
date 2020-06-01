@@ -100,10 +100,12 @@ public class UserDetailsFragment extends Fragment {
          conpasswordlayout = getActivity().findViewById(R.id.conpassword_layout);
          conpasswordtext = getActivity().findViewById(R.id.conpassword_textinput);
          emailedittext = getActivity().findViewById(R.id.email_textinput);
+         emaillayout = getActivity().findViewById(R.id.email_layout);
          sharedPreferences = c.getSharedPreferences("Renewprefs", c.MODE_PRIVATE);
          editor = sharedPreferences.edit();
 
 
+         emaillayout.setVisibility(View.GONE);
 
          // If the fragment is not being displayed for the first time to the user
         // get the users data and populate the fields.
@@ -115,7 +117,7 @@ public class UserDetailsFragment extends Fragment {
            textInputEditText.setText(sharedPreferences.getString("name",""));
             passwordtext.setText(sharedPreferences.getString("password", ""));
             conpasswordtext.setText(sharedPreferences.getString("password", ""));
-            emailedittext.setText(sharedPreferences.getString("email", ""));
+
             updatebutton.setVisibility(View.VISIBLE);
             updatebutton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -126,6 +128,10 @@ public class UserDetailsFragment extends Fragment {
                     }
                 }
             });
+        }else{
+
+            updatebutton.setVisibility(View.INVISIBLE);
+
         }
     }
 

@@ -89,6 +89,7 @@ public class AddItemActivity extends AppCompatActivity {
          vswitch = findViewById(R.id.switch_v);
 
          MaterialButton submit = findViewById(R.id.save_button);
+         submit.setVisibility(View.GONE);
 
         LinearLayout ll = findViewById(R.id.timell);
 
@@ -200,8 +201,6 @@ public class AddItemActivity extends AppCompatActivity {
         return errorfound;
     }
 
-
-
     // When the save button is clicked... save the log if a new log or save over the old log if an edited log
     // return result is ok! and close this activity.
 
@@ -278,8 +277,6 @@ public class AddItemActivity extends AppCompatActivity {
             case "Dinner":  return 5;
             case "Evening Snack" : return  6;
         }
-
-
         return 1;
     }
 

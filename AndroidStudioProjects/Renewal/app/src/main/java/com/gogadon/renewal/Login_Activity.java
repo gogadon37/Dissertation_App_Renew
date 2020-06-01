@@ -18,8 +18,8 @@ public class Login_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-
-
+        // Retrieve the users password. When the login button is clicked, compare the two and launch
+        // The home activity if a match is found else return an error message via the helper text.
 
         SharedPreferences myprefs = getSharedPreferences("Renewprefs", MODE_PRIVATE);
         final String password = myprefs.getString("password","");
@@ -34,7 +34,7 @@ public class Login_Activity extends AppCompatActivity {
 
                 if(password.equals(passwordinput.getText().toString())){
 
-                    Intent i = new Intent(Login_Activity.this, Dashboard.class);
+                    Intent i = new Intent(Login_Activity.this, Home.class);
                     startActivity(i);
                     finish();
 

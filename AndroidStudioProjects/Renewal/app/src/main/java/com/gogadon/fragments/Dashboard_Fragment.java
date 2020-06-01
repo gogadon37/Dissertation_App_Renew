@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.gogadon.adapters.LayoutAdapter;
 import com.gogadon.renewal.AddItemActivity;
-import com.gogadon.renewal.Dashboard;
+import com.gogadon.renewal.Home;
 import com.gogadon.renewal.R;
 import com.gogadon.roomdatabase.DatabaseRepository;
 import com.gogadon.roomdatabase.Log;
@@ -39,11 +39,11 @@ public class Dashboard_Fragment extends Fragment {
     static List<Log> logss;
     DatabaseRepository dbr;
 
-    public void setParentactivity(Dashboard parentactivity) {
+    public void setParentactivity(Home parentactivity) {
         this.parentactivity = parentactivity;
     }
 
-    Dashboard parentactivity;
+    Home parentactivity;
     TextView datetextview;
     String currentdate;
     String datecursor;
@@ -54,7 +54,7 @@ public class Dashboard_Fragment extends Fragment {
 
 
 
-    // Create the constructor and get the parent activity (Dashboard.class) and the current date
+    // Create the constructor and get the parent activity (Home.class) and the current date
 
 
     public Dashboard_Fragment(){
@@ -67,7 +67,7 @@ public class Dashboard_Fragment extends Fragment {
 
 
 
-    public Dashboard_Fragment(Dashboard dash, String currentdate) {
+    public Dashboard_Fragment(Home dash, String currentdate) {
 
         parentactivity = dash;
         this.currentdate = currentdate;
@@ -289,8 +289,6 @@ public class Dashboard_Fragment extends Fragment {
         }else{
 
             datetextview.setText(date);
-
-
         }
 
         datecursor = date;

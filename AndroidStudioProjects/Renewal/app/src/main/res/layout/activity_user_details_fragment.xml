@@ -125,7 +125,8 @@
 
                 app:helperText="Optional"
                 app:helperTextEnabled="true"
-                app:startIconDrawable="@drawable/ic_action_email">
+                app:startIconDrawable="@drawable/ic_action_email"
+                tools:visibility="gone">
 
 
                 <com.google.android.material.textfield.TextInputEditText

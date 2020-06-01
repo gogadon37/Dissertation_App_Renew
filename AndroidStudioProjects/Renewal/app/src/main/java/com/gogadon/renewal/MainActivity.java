@@ -16,7 +16,6 @@ import com.gogadon.fragments.RemindersFragment;
 import com.gogadon.fragments.UserDetailsFragment;
 import com.gogadon.fragments.termsandconditions_fragment;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // set the reminders
 
-                    Intent i = new Intent(MainActivity.this, Dashboard.class);
+                    Intent i = new Intent(MainActivity.this, Home.class);
                     startActivity(i);
                     finish();
                 }

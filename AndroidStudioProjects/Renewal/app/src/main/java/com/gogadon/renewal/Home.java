@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Dashboard extends AppCompatActivity {
+public class Home extends AppCompatActivity {
 
     String Usersname;
     ActionBarDrawerToggle toggle;
@@ -43,14 +43,13 @@ public class Dashboard extends AppCompatActivity {
     SharedPreferences.Editor editor;
     Context c;
     String currentdate;
-    int whichfrag;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.home);
 
         sharedPreferences = getSharedPreferences("Renewprefs", MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -84,7 +83,7 @@ public class Dashboard extends AppCompatActivity {
         final DrawerLayout drawerLayout = findViewById(R.id.drawerlayout_dash);
         String open = "open";
         final String close = "close";
-        c = Dashboard.this;
+        c = Home.this;
 
 
         // if the activity has been resotred then get the fragement else make a new one
@@ -92,7 +91,7 @@ public class Dashboard extends AppCompatActivity {
 
          if(savedInstanceState == null){
 
-             dashboard_fragment = new Dashboard_Fragment(Dashboard.this, currentdate);
+             dashboard_fragment = new Dashboard_Fragment(Home.this, currentdate);
              badges_fragment = new Badges_Fragment(c);
              remindersFragment = new RemindersFragment(c);
              stats_fragment = new Stats_Fragment(c);
@@ -118,30 +117,23 @@ public class Dashboard extends AppCompatActivity {
             userDetailsFragment = (UserDetailsFragment) getSupportFragmentManager().findFragmentByTag("frag5");
             if (userDetailsFragment != null) userDetailsFragment.setContext(c);
 
-            if(dashboard_fragment == null)  dashboard_fragment = new Dashboard_Fragment(Dashboard.this, currentdate);
+            if(dashboard_fragment == null)  dashboard_fragment = new Dashboard_Fragment(Home.this, currentdate);
             if(badges_fragment == null)   badges_fragment = new Badges_Fragment(c);
             if(remindersFragment == null)  remindersFragment = new RemindersFragment(c);
             if(stats_fragment == null)       stats_fragment = new Stats_Fragment(c);
             if(userDetailsFragment == null) userDetailsFragment = new UserDetailsFragment(c);
-
-
          }
-
-
-
 
         setfragment(dashboard_fragment, "frag1");
         setSupportActionBar(materialToolbar);
 
 
         // create a drawertoggle and set the drawerlayouts toggle
-
-        toggle = new ActionBarDrawerToggle(Dashboard.this, drawerLayout, materialToolbar, R.string.open, R.string.close);
+        toggle = new ActionBarDrawerToggle(Home.this, drawerLayout, materialToolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
 
 
         // sync the state of the toggle and set the homebuttonenabled and displayasup enabled
-
         getSupportActionBar().setTitle(Usersname + "'s Meals");
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -222,7 +214,6 @@ public class Dashboard extends AppCompatActivity {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout2, f, tag);
         fragmentTransaction.commit();
-
     }
 
 
@@ -231,12 +222,8 @@ public class Dashboard extends AppCompatActivity {
     public void checkforbadges() {
 
         // Check for each of the 6 badge conditions
-
         int numberofdaysused = sharedPreferences.getInt("days_used", 0);
         int numberofitemslogged = sharedPreferences.getInt("items_logged", 0);
-
-
-        System.out.println(numberofdaysused + "NUMBER OF DAYS");
 
 
         // 0 = badge not earned
@@ -298,9 +285,9 @@ public class Dashboard extends AppCompatActivity {
 
         if (secondday != 3) {
 
-            makeText("Second Day Badge Earned!");
+
             // set the badge to 3 to prevent it being reshown to the user
-            if(numberofdaysused >1){
+            if(numberofdaysused >1){ makeText("Second Day Badge Earned!");
                 editor.putInt("badge4", 3);
                 changes = true;
 
@@ -386,11 +373,9 @@ public void writeemail(String Date){
 
 
 
-    //intent.resolve activity
+
 
     Intent email = new Intent(Intent.ACTION_SENDTO);
-
-
     email.setData(Uri.parse("mailto:"));
     email.putExtra(Intent.EXTRA_SUBJECT, "Meal Logs");
     email.putExtra(Intent.EXTRA_TEXT, message);
